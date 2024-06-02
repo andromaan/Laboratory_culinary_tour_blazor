@@ -1,0 +1,6 @@
+@culinary_tour_blazor.Server_HostAddress = http://localhost:5233
+
+GET {{culinary_tour_blazor.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
