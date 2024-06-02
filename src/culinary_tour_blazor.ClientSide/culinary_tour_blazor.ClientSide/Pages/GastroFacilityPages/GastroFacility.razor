@@ -84,7 +84,7 @@ else
     private async Task Delete(Guid id)
     {
         await GastroFacilityService.DeleteAsync(id);
-        GastroFacilityList = await GastroFacilityService.GetAllAsync(); // Refresh the list after deletion
+        GastroFacilityList = await GastroFacilityService.GetAllAsync();
     }
 
     private async Task ConfirmDelete(Guid id)

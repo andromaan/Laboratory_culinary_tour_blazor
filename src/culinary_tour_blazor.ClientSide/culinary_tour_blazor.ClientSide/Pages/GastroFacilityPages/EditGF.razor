@@ -1,0 +1,112 @@
+﻿@page "/gastro_facility/edit/{Id:guid}"
+@using culinary_tour_blazor.ClientSide.Entities
+@using culinary_tour_blazor.ClientSide.HttpServices
+@inject GastroFacilityHttpService GastroFacilityService
+@inject FacilityTypesHttpService FacilityTypesService
+@inject CuisinesHttpService CuisinesService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<h3>Редагування Гастрозакладу</h3>
+
+@if (facility == null)
+{
+    <div>Завантаження...</div>
+}
+else
+{
+    <EditForm Model="facility" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="my-3">
+            <label>Назва</label>
+            <InputText @bind-Value="facility.Name" class="form-control" />
+        </div>
+
+        <div class="my-3">
+            <label>Опис</label>
+            <InputTextArea @bind-Value="facility.Description" class="form-control" />
+        </div>
+
+        <div class="my-3">
+            <label>Тип</label>
+            <InputSelect @bind-Value="facility.TypeId" class="form-control">
+                <option value="">- Оберіть тип -</option>
+                @foreach (var type in Types)
+                {
+                    <option value="@type.Id">@type.Name</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="my-3">
+@*             <label>Кухні</label>
+            @foreach (var cuisine in Cuisines)
+            {
+                <div class="form-check">
+                    <InputCheckbox @bind-Value="selectedCuisines" Value="@cuisine.Id" class="form-check-input" />
+                    <label class="form-check-label">@cuisine.Name</label>
+                </div>
+            } *@
+        </div>
+
+        <div class="my-3">
+            <label>Фото</label>
+            <InputFile OnChange="OnImageChange" accept="image/*" class="form-control" />
+        </div>
+
+        <div class="my-3">
+            @if (imagePreviewUrl != null)
+            {
+                <img src="@imagePreviewUrl" class="img-fluid" style="max-height: 200px;" />
+            }
+        </div>
+
+        <div class="my-3">
+            <button type="submit" class="btn btn-primary">Зберегти</button>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private GastroFacilityItem facility;
+    private List<FacilityType> Types = new List<FacilityType>();
+    private List<Cuisine> Cuisines = new List<Cuisine>();
+    private HashSet<int> selectedCuisines = new HashSet<int>();
+    private string imagePreviewUrl;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        facility = await GastroFacilityService.GetById(Id);
+        Types = await FacilityTypesService.GetAllAsync();
+        Cuisines = await CuisinesService.GetAllAsync();
+        selectedCuisines = facility.Cuisines.Select(c => c.Id).ToHashSet();
+
+        if (facility.Photo != null)
+        {
+            var base64 = Convert.ToBase64String(facility.Photo);
+            imagePreviewUrl = $"data:image/png;base64,{base64}";
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        await GastroFacilityService.UpdateAsync(facility);
+        Navigation.NavigateTo("/gastro_facility");
+    }
+
+    private async Task OnImageChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var buffer = new byte[file.Size];
+        await file.OpenReadStream().ReadAsync(buffer);
+        facility.Photo = buffer;
+
+        var base64 = Convert.ToBase64String(buffer);
+        imagePreviewUrl = $"data:image/png;base64,{base64}";
+    }
+}
