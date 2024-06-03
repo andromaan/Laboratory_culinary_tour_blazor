@@ -37,7 +37,8 @@
         <select @onchange="OnCuisineSelectionChanged" class="form-control" multiple>
             @foreach (var cuisine in Cuisines)
             {
-                <option value="@cuisine.Id" selected="@selectedCuisines.Contains(cuisine.Id)">@cuisine.Name</option>
+                @* <option value="@cuisine.Id" selected="@selectedCuisines.Contains(cuisine.Id)">@cuisine.Name</option> *@
+                <option value="@cuisine.Id">@cuisine.Name</option>
             }
         </select>
     </div>
@@ -56,8 +57,8 @@
 
 @code {
     private GastroFacilityItem newItem = new GastroFacilityItem();
-    private List<FacilityType> Types = new List<FacilityType>();
-    private List<Cuisine> Cuisines = new List<Cuisine>();
+    private List<FacilityTypeItem> Types = new List<FacilityTypeItem>();
+    private List<CuisineItem> Cuisines = new List<CuisineItem>();
     private List<int> selectedCuisines = new List<int>();
     private string? imagePreviewUrl;
 

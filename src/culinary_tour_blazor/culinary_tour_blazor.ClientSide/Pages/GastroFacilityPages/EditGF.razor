@@ -41,14 +41,14 @@ else
         </div>
 
         <div class="my-3">
-@*             <label>Кухні</label>
-            @foreach (var cuisine in Cuisines)
-            {
-                <div class="form-check">
-                    <InputCheckbox @bind-Value="selectedCuisines" Value="@cuisine.Id" class="form-check-input" />
-                    <label class="form-check-label">@cuisine.Name</label>
-                </div>
-            } *@
+            @*             <label>Кухні</label>
+        @foreach (var cuisine in Cuisines)
+        {
+        <div class="form-check">
+        <InputCheckbox @bind-Value="selectedCuisines" Value="@cuisine.Id" class="form-check-input" />
+        <label class="form-check-label">@cuisine.Name</label>
+        </div>
+        } *@
         </div>
 
         <div class="my-3">
@@ -74,8 +74,8 @@ else
     public Guid Id { get; set; }
 
     private GastroFacilityItem facility;
-    private List<FacilityType> Types = new List<FacilityType>();
-    private List<Cuisine> Cuisines = new List<Cuisine>();
+    private List<FacilityTypeItem> Types = new List<FacilityTypeItem>();
+    private List<CuisineItem> Cuisines = new List<CuisineItem>();
     private HashSet<int> selectedCuisines = new HashSet<int>();
     private string imagePreviewUrl;
 

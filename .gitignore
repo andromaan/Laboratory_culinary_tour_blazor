@@ -4,5 +4,4 @@ src/.vs/
 bin/
 obj/
 
-src/culinary_tour_blazor.ClientSide/.vs/
-src/culinary_tour_blazor.Server/.vs/
+src/culinary_tour_blazor/.vs/
