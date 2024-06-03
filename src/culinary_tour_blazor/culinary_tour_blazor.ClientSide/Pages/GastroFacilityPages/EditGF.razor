@@ -47,6 +47,11 @@ else
         </div>
 
         <div class="my-3">
+            <div class="col-2"><label>Рейтинг:</label></div>
+            <div class="col-3"><input @bind="facility.RatingAvg" class="form-control" type="number" step=".5" min="1" max="5" /></div>
+        </div>
+
+        <div class="my-3">
             <label>Фото</label>
             <InputFile OnChange="OnImageChange" accept="image/*" class="form-control" />
         </div>
@@ -57,6 +62,8 @@ else
                 <img src="@imagePreviewUrl" class="img-fluid" style="max-height: 200px;" />
             }
         </div>
+
+        
 
         <div class="my-3">
             <button type="submit" class="btn btn-primary">Зберегти</button>

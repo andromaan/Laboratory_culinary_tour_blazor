@@ -14,6 +14,11 @@
 </div>
 
 <div class="my-3">
+    <div class="col-2"><label>Рейтинг:</label></div>
+    <div class="col-3"><input @bind="newItem.RatingAvg" class="form-control" type="number" step=".5" min="1" max="5" /></div>
+</div>
+
+<div class="my-3">
     <div class="col-2"><label>Тип:</label></div>
     <div class="col-3">
         <select @bind="newItem.TypeId" class="form-control">
