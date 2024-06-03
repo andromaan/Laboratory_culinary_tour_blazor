@@ -37,8 +37,7 @@
         <select @onchange="OnCuisineSelectionChanged" class="form-control" multiple>
             @foreach (var cuisine in Cuisines)
             {
-                @* <option value="@cuisine.Id" selected="@selectedCuisines.Contains(cuisine.Id)">@cuisine.Name</option> *@
-                <option value="@cuisine.Id">@cuisine.Name</option>
+                <option value="@cuisine.Id" selected="@selectedCuisines.Contains(cuisine.Id)">@cuisine.Name</option>
             }
         </select>
     </div>

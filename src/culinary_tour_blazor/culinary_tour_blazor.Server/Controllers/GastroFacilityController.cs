@@ -40,7 +40,27 @@ namespace culinary_tour_blazor.Server.Controllers
         {
             try
             {
-                await _context.GastroFacilities.AddAsync(entity);
+                var gf = new GastroFacility
+                {
+                    Name = entity.Name,
+                    Description = entity.Description,
+                    ImagePath = entity.ImagePath,
+                    Photo = entity.Photo,
+                    RatingAvg = entity.RatingAvg,
+                    Type = entity.Type,
+                    TypeId = entity.TypeId
+                };
+
+                foreach (var cuisine_2 in entity.Cuisines)
+                {
+                    var cuisine = await _context.Cuisines.FirstOrDefaultAsync(x=> x.Id == cuisine_2.Id);
+                    if (cuisine != null)
+                    {
+                        gf.Cuisines.Add(cuisine);
+                    }
+                }
+
+                await _context.GastroFacilities.AddAsync(gf);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

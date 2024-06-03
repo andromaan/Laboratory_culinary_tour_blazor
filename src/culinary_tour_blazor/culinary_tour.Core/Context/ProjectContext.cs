@@ -20,9 +20,9 @@ namespace culinary_tour.Core.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<GastroFacility>()
-            .HasMany(x => x.Cuisines)
-            .WithMany(x => x.GastroFacilities)
-            .UsingEntity(x => x.ToTable("GastroFacilitieCuisine"));
+             .HasMany(x => x.Cuisines)
+             .WithMany(x => x.GastroFacilities)
+             .UsingEntity(x => x.ToTable("GastroFacilitieCuisine"));
 
             base.OnModelCreating(builder);
 
