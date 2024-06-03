@@ -10,7 +10,7 @@
 
 <a class="btn btn-primary my-2" role="button" href="/gastro_facility/create">Додати заклад</a>
 
-@if (GastroFacilityList is null)
+@if (GastroFacility is null)
 {
     <div class="alert alert-info">Заклади відсутні!</div>
 }
@@ -18,7 +18,7 @@ else
 {
     <br />
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 container-xxl">
-        @foreach (var gf in GastroFacilityList)
+        @foreach (var gf in GastroFacility)
         {
             <div class="col">
                 <div class="card zoom-on-hover">
@@ -74,17 +74,17 @@ else
 }
 
 @code {
-    private List<GastroFacilityItem> GastroFacilityList = new List<GastroFacilityItem>();
+    private List<GastroFacility> GastroFacility = new List<GastroFacility>();
 
     protected override async Task OnInitializedAsync()
     {
-        GastroFacilityList = await GastroFacilityService.GetAllAsync();
+        GastroFacility = await GastroFacilityService.GetAllAsync();
     }
 
     private async Task Delete(Guid id)
     {
         await GastroFacilityService.DeleteAsync(id);
-        GastroFacilityList = await GastroFacilityService.GetAllAsync();
+        GastroFacility = await GastroFacilityService.GetAllAsync();
     }
 
     private async Task ConfirmDelete(Guid id)
