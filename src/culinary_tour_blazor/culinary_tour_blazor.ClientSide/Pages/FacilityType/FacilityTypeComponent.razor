@@ -1,0 +1,126 @@
+﻿@page "/facilitytypes"
+@using culinary_tour.Core.Entities
+@inject FacilityTypesHttpService FacilityTypesService
+@inject IJSRuntime JSRuntime
+
+<h3>Типи закладів</h3>
+
+<div class="my-3">
+    <div class="col-2"><label>Назва нового типу:</label></div>
+    <div class="col-3">
+        <input @bind="newFacilityType.Name" class="form-control" />
+    </div>
+    <div class="col-2">
+        <button class="btn btn-primary my-2" @onclick="AddFacilityType">Додати</button>
+    </div>
+</div>
+
+@if (facilityTypes.Count == 0)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Назва</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var facilityType in facilityTypes)
+            {
+                <tr>
+                    <td>@facilityType.Id</td>
+                    <td>
+                        @if (editFacilityType?.Id == facilityType.Id)
+                        {
+                            <input @bind="editFacilityType.Name" class="form-control" />
+                        }
+                        else
+                        {
+                            @facilityType.Name
+                        }
+                    </td>
+                    <td>
+                        @if (editFacilityType?.Id == facilityType.Id)
+                        {
+                            <button class="btn btn-success" @onclick="UpdateFacilityType">Зберегти</button>
+                            <button class="btn btn-secondary" @onclick="CancelEdit">Скасувати</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" @onclick="() => EditFacilityType(facilityType)">Редагувати</button>
+                            <button class="btn btn-danger" @onclick="() => ConfirmDelete(facilityType.Id)">Видалити</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<FacilityType> facilityTypes = new List<FacilityType>();
+    private FacilityType newFacilityType = new FacilityType();
+    private FacilityType editFacilityType;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadFacilityTypes();
+    }
+
+    private async Task LoadFacilityTypes()
+    {
+        facilityTypes = await FacilityTypesService.GetAllAsync();
+    }
+
+    private async Task AddFacilityType()
+    {
+        await FacilityTypesService.AddAsync(newFacilityType);
+        newFacilityType = new FacilityType();
+        await LoadFacilityTypes();
+    }
+
+    private void EditFacilityType(FacilityType facilityType)
+    {
+        editFacilityType = new FacilityType
+            {
+                Id = facilityType.Id,
+                Name = facilityType.Name
+            };
+    }
+
+    private async Task UpdateFacilityType()
+    {
+        await FacilityTypesService.UpdateAsync(editFacilityType);
+        editFacilityType = null;
+        await LoadFacilityTypes();
+    }
+
+    private void CancelEdit()
+    {
+        editFacilityType = null;
+    }
+
+    private async Task Delete(int id)
+    {
+        await FacilityTypesService.DeleteAsync(id);
+        facilityTypes = await FacilityTypesService.GetAllAsync();
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Ви впевнені, що хочете видалити цей тип закладу?");
+        if (confirmed)
+        {
+            await Delete(id);
+        }
+    }
+}
