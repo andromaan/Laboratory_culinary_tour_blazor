@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "culinary_tour.Core", "culin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "culinary_tour_blazor.Server", "culinary_tour_blazor.Server\culinary_tour_blazor.Server.csproj", "{9F313DB8-A74A-43DE-A13F-CB0DCF26C5E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "culinary_tour_blazor.ClientSide", "culinary_tour_blazor.ClientSide\culinary_tour_blazor.ClientSide.csproj", "{2D0055E1-8F8C-44A9-8DB9-0496A5136450}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "culinary_tour_blazor.ClientSide", "culinary_tour_blazor.ClientSide\culinary_tour_blazor.ClientSide.csproj", "{2D0055E1-8F8C-44A9-8DB9-0496A5136450}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

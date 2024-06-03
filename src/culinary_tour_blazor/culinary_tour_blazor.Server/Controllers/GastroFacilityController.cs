@@ -51,9 +51,9 @@ namespace culinary_tour_blazor.Server.Controllers
                     TypeId = entity.TypeId
                 };
 
-                foreach (var cuisine_2 in entity.Cuisines)
+                foreach (var cuisineId in entity.Cuisines.Select(x => x.Id))
                 {
-                    var cuisine = await _context.Cuisines.FirstOrDefaultAsync(x=> x.Id == cuisine_2.Id);
+                    var cuisine = await _context.Cuisines.FindAsync(cuisineId);
                     if (cuisine != null)
                     {
                         gf.Cuisines.Add(cuisine);
@@ -69,13 +69,56 @@ namespace culinary_tour_blazor.Server.Controllers
             }
         }
 
-
         [HttpPut]
         public async Task UpdateAsync(GastroFacility entity)
         {
-            _context.GastroFacilities.Update(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var gastroFacility = await _context.GastroFacilities
+                                                   .Include(gf => gf.Cuisines)
+                                                   .FirstOrDefaultAsync(gf => gf.Id == entity.Id);
+
+                if (gastroFacility == null)
+                {
+                    throw new Exception("GastroFacility not found");
+                }
+
+                gastroFacility.Name = entity.Name;
+                gastroFacility.Description = entity.Description;
+                gastroFacility.ImagePath = entity.ImagePath;
+                gastroFacility.Photo = entity.Photo;
+                gastroFacility.RatingAvg = entity.RatingAvg;
+                gastroFacility.TypeId = entity.TypeId;
+
+                // Remove cuisines not in the updated list
+                var cuisinesToRemove = gastroFacility.Cuisines.Where(c => !entity.Cuisines.Any(ec => ec.Id == c.Id)).ToList();
+                foreach (var cuisine in cuisinesToRemove)
+                {
+                    gastroFacility.Cuisines.Remove(cuisine);
+                }
+
+                // Add new cuisines
+                foreach (var cuisineId in entity.Cuisines.Select(x => x.Id))
+                {
+                    if (!gastroFacility.Cuisines.Any(c => c.Id == cuisineId))
+                    {
+                        var cuisine = await _context.Cuisines.FindAsync(cuisineId);
+                        if (cuisine != null)
+                        {
+                            gastroFacility.Cuisines.Add(cuisine);
+                        }
+                    }
+                }
+
+                _context.GastroFacilities.Update(gastroFacility);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching data: {ex.Message}");
+            }
         }
+
 
         [HttpDelete("{id}")]
         public async Task DeleteAsync(Guid id)
