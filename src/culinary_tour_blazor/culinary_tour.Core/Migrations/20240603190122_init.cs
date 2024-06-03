@@ -119,8 +119,8 @@ namespace culinary_tour.Core.Migrations
                 columns: new[] { "Id", "Description", "ImagePath", "Name", "Photo", "RatingAvg", "TypeId" },
                 values: new object[,]
                 {
-                    { new Guid("07208f86-692b-40be-938c-6fac756d4913"), "", null, "Заклад 1", null, 0m, 1 },
-                    { new Guid("852f627c-83a2-47b7-917f-d722f181b959"), "", null, "Заклад 2", null, 0m, 1 }
+                    { new Guid("a932f185-bfab-4943-9c6c-4fc495910834"), "", null, "Заклад 1", null, 0m, 1 },
+                    { new Guid("d33033be-551f-4641-9390-06cdbbe2ab31"), "", null, "Заклад 2", null, 0m, 1 }
                 });
 
             migrationBuilder.CreateIndex(

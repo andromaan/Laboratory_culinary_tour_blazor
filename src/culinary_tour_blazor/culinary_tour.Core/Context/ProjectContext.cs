@@ -1,6 +1,4 @@
 ﻿using culinary_tour.Core.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using System;   
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;

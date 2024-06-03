@@ -1,5 +1,5 @@
 ﻿@page "/gastro_facility/edit/{Id:guid}"
-@using culinary_tour_blazor.ClientSide.Entities
+@using culinary_tour.Core.Entities
 @using culinary_tour_blazor.ClientSide.HttpServices
 @inject GastroFacilityHttpService GastroFacilityService
 @inject FacilityTypesHttpService FacilityTypesService
@@ -73,7 +73,7 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    private Entities.GastroFacility facility;
+    private GastroFacility facility = new GastroFacility();
     private List<FacilityType> Types = new List<FacilityType>();
     private List<Cuisine> Cuisines = new List<Cuisine>();
     private HashSet<int> selectedCuisines = new HashSet<int>();
@@ -81,10 +81,10 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        facility = await GastroFacilityService.GetById(Id);
+        facility = await GastroFacilityService.GetById(Id) ?? new GastroFacility();
         Types = await FacilityTypesService.GetAllAsync();
         Cuisines = await CuisinesService.GetAllAsync();
-        selectedCuisines = facility.Cuisines.Select(c => c.Id).ToHashSet();
+        selectedCuisines = facility.Cuisines?.Select(c => c.Id).ToHashSet() ?? new HashSet<int>();
 
         if (facility.Photo != null)
         {
@@ -95,6 +95,7 @@ else
 
     private async Task HandleSubmit()
     {
+        facility.Type = null;
         await GastroFacilityService.UpdateAsync(facility);
         Navigation.NavigateTo("/gastro_facility");
     }

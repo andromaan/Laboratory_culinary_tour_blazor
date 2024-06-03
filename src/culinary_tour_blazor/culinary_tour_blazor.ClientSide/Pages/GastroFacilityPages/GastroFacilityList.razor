@@ -1,6 +1,6 @@
 ﻿@page "/gastro_facility"
 @using System.Text.Json
-@using culinary_tour_blazor.ClientSide.Entities
+@using culinary_tour.Core.Entities
 @using culinary_tour_blazor.ClientSide.HttpServices
 @inject NavigationManager Navigation
 @inject GastroFacilityHttpService GastroFacilityService
@@ -10,9 +10,13 @@
 
 <a class="btn btn-primary my-2" role="button" href="/gastro_facility/create">Додати заклад</a>
 
-@if (GastroFacility is null)
+@if (GastroFacility.Count == 0)
 {
-    <div class="alert alert-info">Заклади відсутні!</div>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
 }
 else
 {
@@ -54,7 +58,6 @@ else
                                 <span class="my-rating" data-rating="@gf.RatingAvg?.ToString("F1").Replace(",", ".")"></span>
                             </div>
                         </div>
-                        @* Only show edit and delete buttons if the user is in the "Admin" role *@
                         @if (true)
                         {
                             <div class="mr-2 d-flex justify-content-around my-3 buttons">

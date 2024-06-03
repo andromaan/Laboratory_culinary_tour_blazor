@@ -3,6 +3,7 @@ using culinary_tour.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 namespace culinary_tour_blazor.Server.Controllers
 {
@@ -37,9 +38,17 @@ namespace culinary_tour_blazor.Server.Controllers
         [HttpPost]
         public async Task CreateAsync(GastroFacility entity)
         {
-            await _context.GastroFacilities.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.GastroFacilities.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching data: {ex.Message}");
+            }
         }
+
 
         [HttpPut]
         public async Task UpdateAsync(GastroFacility entity)

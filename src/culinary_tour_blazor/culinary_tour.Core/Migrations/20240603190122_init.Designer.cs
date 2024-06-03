@@ -12,7 +12,7 @@ using culinary_tour.Core.Context;
 namespace culinary_tour.Core.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20240603082418_init")]
+    [Migration("20240603190122_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -182,7 +182,7 @@ namespace culinary_tour.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("07208f86-692b-40be-938c-6fac756d4913"),
+                            Id = new Guid("a932f185-bfab-4943-9c6c-4fc495910834"),
                             Description = "",
                             Name = "Заклад 1",
                             RatingAvg = 0m,
@@ -190,7 +190,7 @@ namespace culinary_tour.Core.Migrations
                         },
                         new
                         {
-                            Id = new Guid("852f627c-83a2-47b7-917f-d722f181b959"),
+                            Id = new Guid("d33033be-551f-4641-9390-06cdbbe2ab31"),
                             Description = "",
                             Name = "Заклад 2",
                             RatingAvg = 0m,

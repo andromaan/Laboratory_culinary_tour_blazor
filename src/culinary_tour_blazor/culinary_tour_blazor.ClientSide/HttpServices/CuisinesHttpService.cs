@@ -1,4 +1,4 @@
-﻿using culinary_tour_blazor.ClientSide.Entities;
+﻿using culinary_tour.Core.Entities;
 using System.Net.Http.Json;
 
 namespace culinary_tour_blazor.ClientSide.HttpServices

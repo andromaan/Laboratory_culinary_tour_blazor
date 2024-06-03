@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,19 +13,11 @@ namespace culinary_tour.Core.Entities
         [ForeignKey(nameof(GastroFacility))]
         public Guid GastroFacilityId { get; set; }
         public GastroFacility GastroFacility { get; set; }
-
-        [ForeignKey(nameof(User))]
-        public Guid UserId { get; set; }
-        public User User { get; set; }
         public string Coment {  get; set; }
 
         [Column(TypeName = "decimal(2, 1)")]
         public double Rating { get; set; }
         public DateTime DateTime { get; set; }
-        [NotMapped]
-        public IFormFileCollection? GalleryFiles { get; set; }
-        [NotMapped]
-        public IFormFile? VideoFile { get; set; }
         public string VideoFilePath { get; set; }
         public virtual ICollection<ReviewImages> ReviewImages { get; set; } = new HashSet<ReviewImages>();
     }
