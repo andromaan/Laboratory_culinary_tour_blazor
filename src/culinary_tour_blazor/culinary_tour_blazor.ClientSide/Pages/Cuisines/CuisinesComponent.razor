@@ -1,0 +1,125 @@
+﻿@page "/cuisines"
+@using culinary_tour.Core.Entities
+@inject CuisinesHttpService CuisinesService
+
+<h3>Кухні</h3>
+
+<div class="my-3">
+    <div class="col-2"><label>Назва нової кухні:</label></div>
+    <div class="col-3">
+        <input @bind="newCuisine.Name" class="form-control" />
+    </div>
+    <div class="col-2">
+        <button class="btn btn-primary my-2" @onclick="AddCuisine">Додати</button>
+    </div>
+</div>
+
+@if (cuisines.Count == 0)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Назва</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cuisine in cuisines)
+            {
+                <tr>
+                    <td>@cuisine.Id</td>
+                    <td>
+                        @if (editCuisine?.Id == cuisine.Id)
+                        {
+                            <input @bind="editCuisine.Name" class="form-control" />
+                        }
+                        else
+                        {
+                            @cuisine.Name
+                        }
+                    </td>
+                    <td>
+                        @if (editCuisine?.Id == cuisine.Id)
+                        {
+                            <button class="btn btn-success" @onclick="UpdateCuisine">Зберегти</button>
+                            <button class="btn btn-secondary" @onclick="CancelEdit">Скасувати</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" @onclick="() => EditCuisine(cuisine)">Редагувати</button>
+                            <button class="btn btn-danger" @onclick="() => ConfirmDelete(cuisine.Id)">Видалити</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Cuisine> cuisines = new List<Cuisine>();
+    private Cuisine newCuisine = new Cuisine();
+    private Cuisine editCuisine;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCuisines();
+    }
+
+    private async Task LoadCuisines()
+    {
+        cuisines = await CuisinesService.GetAllAsync();
+    }
+
+    private async Task AddCuisine()
+    {
+        await CuisinesService.AddAsync(newCuisine);
+        newCuisine = new Cuisine();
+        await LoadCuisines();
+    }
+
+    private void EditCuisine(Cuisine cuisine)
+    {
+        editCuisine = new Cuisine
+            {
+                Id = cuisine.Id,
+                Name = cuisine.Name
+            };
+    }
+
+    private async Task UpdateCuisine()
+    {
+        await CuisinesService.UpdateAsync(editCuisine);
+        editCuisine = null;
+        await LoadCuisines();
+    }
+
+    private void CancelEdit()
+    {
+        editCuisine = null;
+    }
+
+    private async Task Delete(int id)
+    {
+        await CuisinesService.DeleteAsync(id);
+        cuisines = await CuisinesService.GetAllAsync();
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", new object[] { "Are you sure you want to delete this facility?" });
+        if (confirmed)
+        {
+            await Delete(id);
+        }
+    }
+}

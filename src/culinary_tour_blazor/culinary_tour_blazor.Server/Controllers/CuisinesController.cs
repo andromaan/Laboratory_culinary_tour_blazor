@@ -30,5 +30,28 @@ namespace culinary_tour_blazor.Server.Controllers
         {
             return await _context.Cuisines.FirstAsync(x => x.Id == id);
         }
+
+        [HttpPost]
+        public async Task CreateAsync(Cuisine entity)
+        {
+            await _context.Cuisines.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
+        [HttpPut]
+        public async Task UpdateAsync(Cuisine entity)
+        {
+            _context.Cuisines.Update(entity);
+            await _context.SaveChangesAsync();
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task DeleteAsync(int id)
+        {
+            _context.Cuisines.Remove(await _context.Cuisines.FindAsync(id));
+            await _context.SaveChangesAsync();
+
+        }
     }
 }
