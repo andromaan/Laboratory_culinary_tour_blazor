@@ -12,9 +12,9 @@ namespace culinary_tour_blazor.ClientSide.HttpServices
             this._httpClient = httpClient;
         }
 
-        public async Task<List<FacilityTypeItem>> GetAllAsync()
+        public async Task<List<FacilityType>> GetAllAsync()
         {
-            var items = await _httpClient.GetFromJsonAsync<List<FacilityTypeItem>>("/api/FacilityType");
+            var items = await _httpClient.GetFromJsonAsync<List<FacilityType>>("/api/FacilityType");
             return items;
         }
     }

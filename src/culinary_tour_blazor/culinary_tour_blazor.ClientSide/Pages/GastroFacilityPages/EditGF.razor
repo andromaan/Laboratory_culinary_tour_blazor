@@ -73,9 +73,9 @@ else
     [Parameter]
     public Guid Id { get; set; }
 
-    private GastroFacilityItem facility;
-    private List<FacilityTypeItem> Types = new List<FacilityTypeItem>();
-    private List<CuisineItem> Cuisines = new List<CuisineItem>();
+    private Entities.GastroFacility facility;
+    private List<FacilityType> Types = new List<FacilityType>();
+    private List<Cuisine> Cuisines = new List<Cuisine>();
     private HashSet<int> selectedCuisines = new HashSet<int>();
     private string imagePreviewUrl;
 

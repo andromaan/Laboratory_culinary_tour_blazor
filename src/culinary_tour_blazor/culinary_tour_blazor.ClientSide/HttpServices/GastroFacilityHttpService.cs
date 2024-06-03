@@ -12,26 +12,26 @@ namespace culinary_tour_blazor.ClientSide.HttpServices
             this._httpClient = httpClient;
         }
 
-        public async Task<List<GastroFacilityItem>> GetAllAsync()
+        public async Task<List<GastroFacility>> GetAllAsync()
         {
-            var items = await _httpClient.GetFromJsonAsync<List<GastroFacilityItem>>("/api/GastroFacility");
+            var items = await _httpClient.GetFromJsonAsync<List<GastroFacility>>("/api/GastroFacility");
             return items;
         }
 
-        public async Task AddAsync(GastroFacilityItem item)
+        public async Task AddAsync(GastroFacility item)
         {
             await _httpClient.PostAsJsonAsync("/api/GastroFacility", item);
         }
 
-        public async Task UpdateAsync(GastroFacilityItem item)
+        public async Task UpdateAsync(GastroFacility item)
         {
             await _httpClient.PutAsJsonAsync($"/api/GastroFacility", item);
         }
 
-        public async Task<GastroFacilityItem> GetById(Guid id)
+        public async Task<GastroFacility> GetById(Guid id)
         {
             var result = await _httpClient
-                .GetFromJsonAsync<GastroFacilityItem>($"/api/GastroFacility/{id}");
+                .GetFromJsonAsync<GastroFacility>($"/api/GastroFacility/{id}");
             return result;
         }
 
